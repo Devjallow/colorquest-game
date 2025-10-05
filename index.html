@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#667eea">
+    <meta name="description" content="Fun color learning game for kindergarten children">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="ColorQuest">
+    
+    <title>ColorQuest - Learn Colors!</title>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkNvbG9yUXVlc3QgLSBMZWFybiBDb2xvcnMiLAogICJzaG9ydF9uYW1lIjogIkNvbG9yUXVlc3QiLAogICJkZXNjcmlwdGlvbiI6ICJGdW4gY29sb3IgbGVhcm5pbmcgZ2FtZSBmb3Iga2luZGVyZ2FydGVuIGNoaWxkcmVuIiwKICAic3RhcnRfdXJsIjogIi8iLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiM2NjdlZWEiLAogICJ0aGVtZV9jb2xvciI6ICIjNjY3ZWVhIiwKICAib3JpZW50YXRpb24iOiAicG9ydHJhaXQiLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJkYXRhOmltYWdlL3N2Zyt4bWwsJTNDc3ZnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zycgdmlld0JveD0nMCAwIDEwMCAxMDAnJTNFJTNDcmVjdCBmaWxsPSclMjM2NjdlZWEnIHdpZHRoPScxMDAnIGhlaWdodD0nMTAwJyByeD0nMjAnLyUzRSUzQ3RleHQgeD0nNTAnIHk9JzYwJyBmb250LXNpemU9JzUwJyB0ZXh0LWFuY2hvcj0nbWlkZGxlJyUzRSVGMCU5RiU4RSU4OCUzQy90ZXh0JTNFJTNDL3N2ZyUzRSIsCiAgICAgICJzaXplcyI6ICIxOTJ4MTkyIiwKICAgICAgInR5cGUiOiAiaW1hZ2Uvc3ZnK3htbCIsCiAgICAgICJwdXJwb3NlIjogImFueSBtYXNrYWJsZSIKICAgIH0sCiAgICB7CiAgICAgICJzcmMiOiAiZGF0YTppbWFnZS9zdmcreG1sLCUzQ3N2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAxMDAgMTAwJyUzRSUzQ3JlY3QgZmlsbD0nJTIzNjY3ZWVhJyB3aWR0aD0nMTAwJyBoZWlnaHQ9JzEwMCcgcng9JzIwJy8lM0UlM0N0ZXh0IHg9JzUwJyB5PSc2MCcgZm9udC1zaXplPSc1MCcgdGV4dC1hbmNob3I9J21pZGRsZSclM0UlRjAlOUYlOEUlODglM0MvdGV4dCUzRSUzQy9zdmclM0UiLAogICAgICAic2l6ZXMiOiAiNTEyeDUxMiIsCiAgICAgICJ0eXBlIjogImltYWdlL3N2Zyt4bWwiLAogICAgICAicHVycG9zZSI6ICJhbnkgbWFza2FibGUiCiAgICB9CiAgXQp9">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #667eea;
+            --primary-dark: #4f46e5;
+            --secondary: #764ba2;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --gray: #64748b;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', 'Arial Rounded MT Bold', cursive;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            padding: 20px;
+        }
+
+        /* PWA Install Banner */
+        .install-banner {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 1rem 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            gap: 1rem;
+            animation: slideUp 0.5s ease;
+            max-width: 90%;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateX(-50%) translateY(100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(-50%) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .install-banner.show {
+            display: flex;
+        }
+
+        .install-btn {
+            padding: 0.7rem 1.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .install-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .close-banner {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+
+        /* Music Control Button */
+        .music-control {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            background: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 1.8rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .music-control:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+        }
+
+        .music-control:active {
+            transform: scale(0.95);
+        }
+
+        /* Start Screen */
+        .start-screen {
+            background: white;
+            border-radius: 30px;
+            padding: 3rem;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: bounceIn 0.8s ease;
+        }
+
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .start-screen h1 {
+            font-size: 3rem;
+            color: #667eea;
+            margin-bottom: 1rem;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.1);
+        }
+
+        .start-screen .rainbow {
+            font-size: 4rem;
+            margin: 1rem 0;
+            animation: rotate 3s infinite linear;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .start-screen p {
+            font-size: 1.5rem;
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        .level-select {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .level-btn {
+            padding: 1.5rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .level-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        .level-easy {
+            background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+            color: #2d5016;
+        }
+
+        .level-medium {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            color: #8b4513;
+        }
+
+        .level-hard {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            color: #8b0000;
+        }
+
+        /* Game Screen */
+        .game-screen {
+            background: white;
+            border-radius: 30px;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .score-board {
+            display: flex;
+            gap: 2rem;
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+
+        .score-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .stars {
+            font-size: 2rem;
+        }
+
+        .progress-bar {
+            background: #e0e0e0;
+            height: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #84fab0 0%, #8fd3f4 100%);
+            height: 100%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .color-display {
+            width: 300px;
+            height: 300px;
+            margin: 2rem auto;
+            border-radius: 50%;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            animation: pulse 2s infinite;
+            border: 10px solid white;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .question {
+            text-align: center;
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 2rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .speaker-icon {
+            cursor: pointer;
+            font-size: 2.5rem;
+            transition: transform 0.3s;
+            display: inline-block;
+        }
+
+        .speaker-icon:hover {
+            transform: scale(1.2);
+        }
+
+        .speaker-icon:active {
+            animation: speakerPulse 0.3s ease;
+        }
+
+        @keyframes speakerPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .option-btn {
+            padding: 1.5rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border: 4px solid transparent;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .option-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        .option-btn.correct {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            animation: correctBounce 0.6s ease;
+        }
+
+        .option-btn.wrong {
+            background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes correctBounce {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.1); }
+            50% { transform: scale(0.95); }
+            75% { transform: scale(1.05); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        /* Result Screen */
+        .result-screen {
+            background: white;
+            border-radius: 30px;
+            padding: 3rem;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: bounceIn 0.8s ease;
+        }
+
+        .result-screen h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #667eea;
+        }
+
+        .result-emoji {
+            font-size: 5rem;
+            margin: 1rem 0;
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .result-stats {
+            font-size: 1.5rem;
+            margin: 2rem 0;
+            color: #666;
+        }
+
+        .result-stats div {
+            margin: 0.5rem 0;
+        }
+
+        .btn-large {
+            padding: 1rem 2rem;
+            font-size: 1.3rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            margin: 0.5rem;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            color: #8b4513;
+        }
+
+        .btn-large:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Confetti */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #f0f;
+            position: fixed;
+            animation: confetti-fall 3s linear;
+            pointer-events: none;
+        }
+
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .start-screen h1 {
+                font-size: 2rem;
+            }
+
+            .start-screen .rainbow {
+                font-size: 3rem;
+            }
+
+            .color-display {
+                width: 200px;
+                height: 200px;
+            }
+
+            .question {
+                font-size: 1.5rem;
+                flex-direction: column;
+            }
+
+            .option-btn {
+                font-size: 1.2rem;
+                padding: 1rem;
+            }
+
+            .level-select {
+                grid-template-columns: 1fr;
+            }
+
+            .music-control {
+                width: 50px;
+                height: 50px;
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- PWA Install Banner -->
+    <div id="installBanner" class="install-banner">
+        <div>
+            <strong>📱 Install ColorQuest</strong>
+            <p style="margin: 0; font-size: 0.9rem; color: #666;">Play offline anytime!</p>
+        </div>
+        <button id="installBtn" class="install-btn">Install</button>
+        <button class="close-banner" onclick="closeInstallBanner()">✕</button>
+    </div>
+
+    <!-- Music Control Button -->
+    <button id="musicControl" class="music-control" onclick="toggleMusic()" title="Toggle Music">
+        🎵
+    </button>
+
+    <div class="container">
+        <!-- Start Screen -->
+        <div id="startScreen" class="start-screen">
+            <h1>🎨 ColorQuest 🎨</h1>
+            <div class="rainbow">🌈</div>
+            <p>Learn Colors the Fun Way!</p>
+            <h3 style="margin-bottom: 1rem; color: #667eea;">Choose Your Level:</h3>
+            <div class="level-select">
+                <button class="level-btn level-easy" onclick="startGame('easy')">
+                    😊 Easy<br>
+                    <small>5 Colors</small>
+                </button>
+                <button class="level-btn level-medium" onclick="startGame('medium')">
+                    😎 Medium<br>
+                    <small>8 Colors</small>
+                </button>
+                <button class="level-btn level-hard" onclick="startGame('hard')">
+                    🤓 Hard<br>
+                    <small>12 Colors</small>
+                </button>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="gameScreen" class="game-screen hidden">
+            <div class="game-header">
+                <div class="score-board">
+                    <div class="score-item">
+                        <span class="stars">⭐</span>
+                        <span id="scoreDisplay">0</span>
+                    </div>
+                    <div class="score-item">
+                        <span>❤️</span>
+                        <span id="livesDisplay">3</span>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill">0/10</div>
+                </div>
+            </div>
+
+            <div class="question" id="question">
+                What color is this?
+                <span class="speaker-icon" onclick="speakColorName(currentColor.name)" title="Listen to color name">🔊</span>
+            </div>
+            
+            <div class="color-display" id="colorDisplay"></div>
+
+            <div class="options" id="optionsContainer"></div>
+        </div>
+
+        <!-- Result Screen -->
+        <div id="resultScreen" class="result-screen hidden">
+            <h2 id="resultTitle"></h2>
+            <div class="result-emoji" id="resultEmoji"></div>
+            <div class="result-stats">
+                <div>⭐ Score: <strong id="finalScore"></strong></div>
+                <div>✅ Correct: <strong id="correctAnswers"></strong></div>
+                <div>❌ Wrong: <strong id="wrongAnswers"></strong></div>
+            </div>
+            <button class="btn-large btn-primary" onclick="restartGame()">Play Again</button>
+            <button class="btn-large btn-secondary" onclick="backToMenu()">Change Level</button>
+        </div>
+    </div>
+
+    <script>
+        // PWA Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                // Create service worker inline
+                const swCode = `
+                    const CACHE_NAME = 'colorquest-v1';
+                    
+                    self.addEventListener('install', (event) => {
+                        event.waitUntil(
+                            caches.open(CACHE_NAME).then((cache) => {
+                                return cache.addAll(['/']);
+                            })
+                        );
+                    });
+                    
+                    self.addEventListener('fetch', (event) => {
+                        event.respondWith(
+                            caches.match(event.request).then((response) => {
+                                return response || fetch(event.request);
+                            })
+                        );
+                    });
+                `;
+                
+                const blob = new Blob([swCode], { type: 'application/javascript' });
+                const swUrl = URL.createObjectURL(blob);
+                
+                navigator.serviceWorker.register(swUrl)
+                    .then(reg => console.log('Service Worker registered'))
+                    .catch(err => console.log('Service Worker registration failed'));
+            });
+        }
+
+        // PWA Install Prompt
+        let deferredPrompt;
+        
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('installBanner').classList.add('show');
+        });
+
+        document.getElementById('installBtn').addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                console.log(`Install prompt outcome: ${outcome}`);
+                deferredPrompt = null;
+                closeInstallBanner();
+            }
+        });
+
+        function closeInstallBanner() {
+            document.getElementById('installBanner').classList.remove('show');
+        }
+
+        // Check if app is installed
+        window.addEventListener('appinstalled', () => {
+            console.log('ColorQuest has been installed!');
+            closeInstallBanner();
+        });
+
+        // Music System
+        let audioContext;
+        let backgroundMusicSource;
+        let isMusicPlaying = false;
+        let musicGainNode;
+
+        function initAudioContext() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                musicGainNode = audioContext.createGain();
+                musicGainNode.connect(audioContext.destination);
+                musicGainNode.gain.value = 0.3;
+            }
+        }
+
+        function playBackgroundMusic() {
+            initAudioContext();
+            
+            if (backgroundMusicSource) {
+                backgroundMusicSource.stop();
+            }
+
+            const melody = [
+                { note: 523.25, duration: 0.3 },
+                { note: 587.33, duration: 0.3 },
+                { note: 659.25, duration: 0.3 },
+                { note: 698.46, duration: 0.3 },
+                { note: 783.99, duration: 0.3 },
+                { note: 880.00, duration: 0.3 },
+                { note: 987.77, duration: 0.3 },
+                { note: 1046.50, duration: 0.6 },
+            ];
+
+            let currentTime = audioContext.currentTime;
+            
+            function playMelodyLoop() {
+                if (!isMusicPlaying) return;
+
+                melody.forEach((note, index) => {
+                    const oscillator = audioContext.createOscillator();
+                    const noteGain = audioContext.createGain();
+                    
+                    oscillator.connect(noteGain);
+                    noteGain.connect(musicGainNode);
+                    
+                    oscillator.frequency.value = note.note;
+                    oscillator.type = 'sine';
+                    
+                    noteGain.gain.setValueAtTime(0, currentTime);
+                    noteGain.gain.linearRampToValueAtTime(0.2, currentTime + 0.05);
+                    noteGain.gain.linearRampToValueAtTime(0, currentTime + note.duration);
+                    
+                    oscillator.start(currentTime);
+                    oscillator.stop(currentTime + note.duration);
+                    
+                    currentTime += note.duration;
+                });
+
+                currentTime += 0.5;
+                
+                setTimeout(() => {
+                    if (isMusicPlaying) {
+                        currentTime = audioContext.currentTime;
+                        playMelodyLoop();
+                    }
+                }, (melody.reduce((sum, note) => sum + note.duration, 0) + 0.5) * 1000);
+            }
+
+            isMusicPlaying = true;
+            playMelodyLoop();
+            updateMusicButton();
+        }
+
+        function stopBackgroundMusic() {
+            isMusicPlaying = false;
+            if (backgroundMusicSource) {
+                try {
+                    backgroundMusicSource.stop();
+                } catch (e) {}
+                backgroundMusicSource = null;
+            }
+            updateMusicButton();
+        }
+
+        function toggleMusic() {
+            if (isMusicPlaying) {
+                stopBackgroundMusic();
+            } else {
+                playBackgroundMusic();
+            }
+        }
+
+        function updateMusicButton() {
+            const btn = document.getElementById('musicControl');
+            btn.textContent = isMusicPlaying ? '🔊' : '🔇';
+            btn.title = isMusicPlaying ? 'Stop Music' : 'Play Music';
+        }
+
+        function playSound(type) {
+            initAudioContext();
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            if (type === 'correct') {
+                oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime);
+                oscillator.frequency.linearRampToValueAtTime(659.25, audioContext.currentTime + 0.1);
+                oscillator.frequency.linearRampToValueAtTime(783.99, audioContext.currentTime + 0.2);
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.3);
+            } else if (type === 'wrong') {
+                oscillator.frequency.setValueAtTime(400, audioContext.currentTime);
+                oscillator.frequency.linearRampToValueAtTime(200, audioContext.currentTime + 0.2);
+                gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.2);
+            } else if (type === 'click') {
+                oscillator.frequency.value = 800;
+                gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.1);
+            }
+        }
+
+        // Text-to-Speech for Color Names
+        function speakColorName(colorName) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                
+                const utterance = new SpeechSynthesisUtterance(colorName);
+                utterance.rate = 0.8;
+                utterance.pitch = 1.2;
+                utterance.volume = 1.0;
+                utterance.lang = 'en-US';
+                
+                const voices = window.speechSynthesis.getVoices();
+                const femaleVoice = voices.find(voice => 
+                    voice.name.includes('Female') || 
+                    voice.name.includes('Google US English') ||
+                    voice.name.includes('Samantha')
+                );
+                
+                if (femaleVoice) {
+                    utterance.voice = femaleVoice;
+                }
+                
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.onvoiceschanged = () => {
+                window.speechSynthesis.getVoices();
+            };
+        }
+
+        // Game Data
+        const colorSets = {
+            easy: [
+                { name: 'Red', hex: '#FF0000' },
+                { name: 'Blue', hex: '#0000FF' },
+                { name: 'Yellow', hex: '#FFFF00' },
+                { name: 'Green', hex: '#00FF00' },
+                { name: 'Purple', hex: '#800080' }
+            ],
+            medium: [
+                { name: 'Red', hex: '#FF0000' },
+                { name: 'Blue', hex: '#0000FF' },
+                { name: 'Yellow', hex: '#FFFF00' },
+                { name: 'Green', hex: '#00FF00' },
+                { name: 'Purple', hex: '#800080' },
+                { name: 'Orange', hex: '#FFA500' },
+                { name: 'Pink', hex: '#FFC0CB' },
+                { name: 'Brown', hex: '#8B4513' }
+            ],
+            hard: [
+                { name: 'Red', hex: '#FF0000' },
+                { name: 'Blue', hex: '#0000FF' },
+                { name: 'Yellow', hex: '#FFFF00' },
+                { name: 'Green', hex: '#00FF00' },
+                { name: 'Purple', hex: '#800080' },
+                { name: 'Orange', hex: '#FFA500' },
+                { name: 'Pink', hex: '#FFC0CB' },
+                { name: 'Brown', hex: '#8B4513' },
+                { name: 'Gray', hex: '#808080' },
+                { name: 'Cyan', hex: '#00FFFF' },
+                { name: 'Magenta', hex: '#FF00FF' },
+                { name: 'Lime', hex: '#BFFF00' }
+            ]
+        };
+
+        let currentLevel = 'easy';
+        let currentColors = [];
+        let currentQuestion = 0;
+        let score = 0;
+        let lives = 3;
+        let correctCount = 0;
+        let wrongCount = 0;
+        let totalQuestions = 10;
+        let currentColor = null;
+        let isAnswering = false;
+
+        function startGame(level) {
+            playSound('click');
+            currentLevel = level;
+            currentColors = [...colorSets[level]];
+            currentQuestion = 0;
+            score = 0;
+            lives = 3;
+            correctCount = 0;
+            wrongCount = 0;
+            isAnswering = false;
+
+            document.getElementById('startScreen').classList.add('hidden');
+            document.getElementById('gameScreen').classList.remove('hidden');
+            document.getElementById('resultScreen').classList.add('hidden');
+
+            if (!isMusicPlaying) {
+                playBackgroundMusic();
+            }
+
+            updateUI();
+            nextQuestion();
+        }
+
+        function nextQuestion() {
+            if (currentQuestion >= totalQuestions || lives <= 0) {
+                showResults();
+                return;
+            }
+
+            isAnswering = false;
+            currentQuestion++;
+            
+            currentColor = currentColors[Math.floor(Math.random() * currentColors.length)];
+            document.getElementById('colorDisplay').style.background = currentColor.hex;
+            
+            generateOptions();
+            updateUI();
+            
+            setTimeout(() => {
+                speakColorName(currentColor.name);
+            }, 500);
+        }
+
+        function generateOptions() {
+            const options = [currentColor.name];
+            const availableColors = currentColors.filter(c => c.name !== currentColor.name);
+            
+            while (options.length < 3) {
+                const randomColor = availableColors[Math.floor(Math.random() * availableColors.length)];
+                if (!options.includes(randomColor.name)) {
+                    options.push(randomColor.name);
+                }
+            }
+            
+            options.sort(() => Math.random() - 0.5);
+            
+            const container = document.getElementById('optionsContainer');
+            container.innerHTML = options.map(option => 
+                `<button class="option-btn" onclick="checkAnswer('${option}')">${option}</button>`
+            ).join('');
+        }
+
+        function checkAnswer(selectedColor) {
+            if (isAnswering) return;
+            isAnswering = true;
+
+            const buttons = document.querySelectorAll('.option-btn');
+            
+            if (selectedColor === currentColor.name) {
+                score += 10;
+                correctCount++;
+                
+                buttons.forEach(btn => {
+                    if (btn.textContent === selectedColor) {
+                        btn.classList.add('correct');
+                    }
+                });
+                
+                playSound('correct');
+                speakColorName(currentColor.name);
+                createConfetti();
+                
+                setTimeout(() => {
+                    nextQuestion();
+                }, 1500);
+            } else {
+                lives--;
+                wrongCount++;
+                
+                buttons.forEach(btn => {
+                    if (btn.textContent === selectedColor) {
+                        btn.classList.add('wrong');
+                    }
+                    if (btn.textContent === currentColor.name) {
+                        btn.classList.add('correct');
+                    }
+                });
+                
+                playSound('wrong');
+                
+                setTimeout(() => {
+                    if (lives > 0) {
+                        nextQuestion();
+                    } else {
+                        showResults();
+                    }
+                }, 2000);
+            }
+            
+            updateUI();
+        }
+
+        function updateUI() {
+            document.getElementById('scoreDisplay').textContent = score;
+            document.getElementById('livesDisplay').textContent = lives;
+            
+            const progress = (currentQuestion / totalQuestions) * 100;
+            const progressFill = document.getElementById('progressFill');
+            progressFill.style.width = progress + '%';
+            progressFill.textContent = `${currentQuestion}/${totalQuestions}`;
+        }
+
+        function showResults() {
+            document.getElementById('gameScreen').classList.add('hidden');
+            document.getElementById('resultScreen').classList.remove('hidden');
+            
+            const percentage = (correctCount / totalQuestions) * 100;
+            let title, emoji;
+            
+            if (percentage >= 80) {
+                title = '🎉 Amazing! 🎉';
+                emoji = '⭐🌟✨';
+                createConfetti();
+            } else if (percentage >= 60) {
+                title = '👏 Great Job! 👏';
+                emoji = '😊👍';
+            } else if (percentage >= 40) {
+                title = '💪 Keep Trying! 💪';
+                emoji = '😌';
+            } else {
+                title = '📚 Practice More! 📚';
+                emoji = '🤔';
+            }
+            
+            document.getElementById('resultTitle').textContent = title;
+            document.getElementById('resultEmoji').textContent = emoji;
+            document.getElementById('finalScore').textContent = score;
+            document.getElementById('correctAnswers').textContent = correctCount;
+            document.getElementById('wrongAnswers').textContent = wrongCount;
+        }
+
+        function restartGame() {
+            playSound('click');
+            startGame(currentLevel);
+        }
+
+        function backToMenu() {
+            playSound('click');
+            document.getElementById('resultScreen').classList.add('hidden');
+            document.getElementById('startScreen').classList.remove('hidden');
+        }
+
+        function createConfetti() {
+            const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
+            
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animationDelay = Math.random() * 0.5 + 's';
+                    document.body.appendChild(confetti);
+                    
+                    setTimeout(() => confetti.remove(), 3000);
+                }, i * 30);
+            }
+        }
+
+        document.addEventListener('click', function initMusic() {
+            if (!isMusicPlaying && audioContext) {
+                playBackgroundMusic();
+            }
+            document.removeEventListener('click', initMusic);
+        }, { once: true });
